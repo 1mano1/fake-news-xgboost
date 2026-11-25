@@ -97,7 +97,13 @@ Tarda unos 25 segundos. **Comprueba que te salga esto:**
 ```
 Si ves `(62633, 5)`, tienes exactamente el mismo dataset limpio que el resto del equipo. El script también vuelve a generar las Tablas 1–2 y las Figuras 1–4.
 
-### Paso 5. Trabajar en tu parte
+### Paso 5. Regenerar los datos procesados (Etapa 2) y trabajar en tu parte
+
+`requirements.txt` ya incluye `scikit-learn`, `joblib` y `vaderSentiment`. Para regenerar localmente la matriz de características (`data/processed/*.parquet`) que dejó lista la Etapa 2:
+
+```bash
+python src/02_feature_eng.py
+```
 
 Cada integrante crea su script en `src/` y lee lo que dejó el anterior. Revisa en `CLAUDE.md` qué archivos recibes, qué debes entregar y qué numeración de tablas y figuras te toca.
 
@@ -115,7 +121,7 @@ Cada integrante crea su script en `src/` y lee lo que dejó el anterior. Revisa 
 | Paso | Comando | Responsable | Estado |
 |------|---------|-------------|--------|
 | 1 | `python src/01_eda_cleaning.py` | Integrante 1 | ✅ Listo |
-| 2 | `python src/02_feature_eng.py` | Integrante 2 | Pendiente |
+| 2 | `python src/02_feature_eng.py` | Integrante 2 | ✅ Listo |
 | 3 | `python src/03_modeling_tuning.py` | Integrante 3 | Pendiente |
 | 4 | `python src/04_eval_shap_errors.py` | Integrante 4 | Pendiente |
 
@@ -141,6 +147,25 @@ Cada integrante crea su script en `src/` y lee lo que dejó el anterior. Revisa 
 | `reports/tables/01_audit_log.json` | Todas las cifras de la auditoría |
 | `reports/figures/fig01` a `fig04` | Figuras 1–4 a 300 dpi |
 | `reports/Proyecto_FakeNews_XGBoost.docx` | Documento del proyecto (portada, introducción y sección 1) |
+
+## Qué hace el Paso 2 (`src/02_feature_eng.py`)
+
+1. **Mitigación de *source leakage*:** aplica 5 reglas regex determinísticas sobre `title` y `text` antes de vectorizar (sufijos editoriales `- NYT`/`- Breitbart`/`- Reuters`, *dateline* y firma `(Reuters)`, créditos de imagen `Featured image`/`Getty`/`Flickr`/`Wikimedia`, banners `21st Century Wire`/`21WIRE`, y URLs/`pic.twitter.com`). Impacta **42,770 artículos (68.29 %)** y conserva los 482 artículos sin título.
+2. **Partición estratificada sin *data leakage*:** ejecuta `train_test_split(..., test_size=0.20, stratify=label, random_state=42)` **antes** de ajustar cualquier transformador (`50,106` en Train: 27,693 Real / 22,413 Fake; `12,527` en Test: 6,924 Real / 5,603 Fake).
+3. **10 características estructurales y de sentimiento:** `title_char_len`, `title_word_len`, `text_char_len`, `text_word_len`, `title_caps_ratio`, `title_excl_count`, `title_quest_count`, `lexical_diversity` (TTR), `title_sentiment` y `text_sentiment` (VADER sobre el título y los primeros 1,000 caracteres del cuerpo), escaladas con `StandardScaler` ajustado solo en Train.
+4. **TF-IDF + TruncatedSVD:** vectoriza título y cuerpo por separado (`ngram_range=(1, 2)`, `max_features=5000`, `sublinear_tf=True`) y reduce dimensionalidad con `TruncatedSVD` (`50` componentes para título: `title_svd_00`..`title_svd_49`, 9.60 % varianza acumulada; `100` componentes para cuerpo: `text_svd_00`..`text_svd_99`, 17.89 % varianza acumulada).
+5. **Validación y exportación:** ensambla matrices densas de **160 columnas** (`float32`, índice `id` trazable) sin nulos ni infinitos.
+
+| Archivo | Contenido | En Git / Regenerable |
+|---------|-----------|----------------------|
+| `data/processed/{X_train,X_test,y_train,y_test}.parquet` | Matrices finales `(50106, 160)` y `(12527, 160)` + etiquetas `int8` | Regenerable localmente (`python src/02_feature_eng.py`) |
+| `models/{tfidf_title,tfidf_text,svd_title,svd_text,scaler}.joblib` | Vectorizadores TF-IDF, reductores SVD y escalador ajustados en Train | Subido al repositorio |
+| `reports/tables/tabla03_limpieza_fuentes.{csv,md}` | Tabla 3: artículos afectados por cada regla de limpieza de fuentes | Regenerable localmente |
+| `reports/tables/tabla04_features_resumen.{csv,md}` | Tabla 4: descriptivos en Train sin escalar + Mann-Whitney U | Regenerable localmente |
+| `reports/tables/02_feature_log.json` | Cifras exactas de partición, TF-IDF, SVD y correlaciones | Regenerable localmente |
+| `reports/figures/fig05` y `fig06` | Figuras 5–6 a 300 dpi (varianza SVD y correlaciones/efecto) | Regenerable localmente |
+
+> **Nota para el Integrante 3 (`03_modeling_tuning.py`):** para la **Iteración 1 (*Baseline*)** usa únicamente las 50 columnas `title_svd_00`..`title_svd_49`. Para las **Iteraciones 2 y 3** usa las 160 columnas completas (`title_svd_*`, `text_svd_*` y las 10 estructurales). El índice `id` permite rastrear cada artículo en el análisis de errores del Integrante 4.
 
 ## Estructura
 
