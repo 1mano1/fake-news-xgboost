@@ -1,0 +1,12 @@
+| Característica                          | Columna           |   Real M |   Real DE |   Real Mdn |   Real IQR |   Fake M |   Fake DE |   Fake Mdn |   Fake IQR |           U | p      |   r_rb |
+|:----------------------------------------|:------------------|---------:|----------:|-----------:|-----------:|---------:|----------:|-----------:|-----------:|------------:|:-------|-------:|
+| Longitud del título (caracteres)        | title_char_len    |   64.31  |    12.556 |     64     |     14     |   81.275 |    29.769 |     81     |     30     | 1.65825e+08 | < .001 |  0.466 |
+| Longitud del título (palabras)          | title_word_len    |   10.033 |     2.153 |     10     |      2     |   12.915 |     4.789 |     13     |      5     | 1.66226e+08 | < .001 |  0.464 |
+| Longitud del cuerpo (caracteres)        | text_char_len     | 3489.72  |  3360.57  |   2628     |   3276     | 3041.47  |  3928.39  |   2229     |   1902     | 3.50548e+08 | < .001 | -0.13  |
+| Longitud del cuerpo (palabras)          | text_word_len     |  579.908 |   573.005 |    427     |    545     |  509.143 |   662.363 |    377     |    319     | 3.451e+08   | < .001 | -0.112 |
+| Proporción de mayúsculas en título      | title_caps_ratio  |    0.103 |     0.063 |      0.085 |      0.102 |    0.282 |     0.178 |      0.246 |      0.175 | 8.07215e+07 | < .001 |  0.74  |
+| Signos ! en título                      | title_excl_count  |    0.002 |     0.052 |      0     |      0     |    0.096 |     0.335 |      0     |      0     | 2.84287e+08 | < .001 |  0.084 |
+| Signos ? en título                      | title_quest_count |    0.025 |     0.16  |      0     |      0     |    0.067 |     0.261 |      0     |      0     | 2.97894e+08 | < .001 |  0.04  |
+| Diversidad léxica (TTR)                 | lexical_diversity |    0.543 |     0.114 |      0.527 |      0.133 |    0.563 |     0.136 |      0.542 |      0.121 | 2.81229e+08 | < .001 |  0.094 |
+| Sentimiento del título (VADER)          | title_sentiment   |   -0.072 |     0.368 |      0     |      0.366 |   -0.137 |     0.437 |      0     |      0.511 | 3.40736e+08 | < .001 | -0.098 |
+| Sentimiento del cuerpo (VADER, 1k car.) | text_sentiment    |    0.035 |     0.749 |      0.116 |      1.601 |   -0.057 |     0.761 |     -0.126 |      1.634 | 3.31082e+08 | < .001 | -0.067 |

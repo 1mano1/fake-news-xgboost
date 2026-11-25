@@ -122,7 +122,7 @@ Cada integrante crea su script en `src/` y lee lo que dejó el anterior. Revisa 
 |------|---------|-------------|--------|
 | 1 | `python src/01_eda_cleaning.py` | Integrante 1 | ✅ Listo |
 | 2 | `python src/02_feature_eng.py` | Integrante 2 | ✅ Listo |
-| 3 | `python src/03_modeling_tuning.py` | Integrante 3 | Pendiente |
+| 3 | `python src/03_modeling_tuning.py` | Integrante 3 | ✅ Listo |
 | 4 | `python src/04_eval_shap_errors.py` | Integrante 4 | Pendiente |
 
 ## Qué hace el Paso 1 (`src/01_eda_cleaning.py`)
@@ -166,6 +166,43 @@ Cada integrante crea su script en `src/` y lee lo que dejó el anterior. Revisa 
 | `reports/figures/fig05` y `fig06` | Figuras 5–6 a 300 dpi (varianza SVD y correlaciones/efecto) | Regenerable localmente |
 
 > **Nota para el Integrante 3 (`03_modeling_tuning.py`):** para la **Iteración 1 (*Baseline*)** usa únicamente las 50 columnas `title_svd_00`..`title_svd_49`. Para las **Iteraciones 2 y 3** usa las 160 columnas completas (`title_svd_*`, `text_svd_*` y las 10 estructurales). El índice `id` permite rastrear cada artículo en el análisis de errores del Integrante 4.
+
+
+## Qué hace el Paso 3 (`src/03_modeling_tuning.py`)
+
+1. **Contrato y validación:** carga `X_train`/`X_test`/`y_train`/`y_test` y verifica formas (50,106 × 160 y 12,527 × 160), columnas exactas y finitud; `X_test` se usa solo para validar contrato, nunca para métricas.
+2. **Protocolo común:** `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)` sobre Train; métricas accuracy, precision, recall, F1, ROC-AUC y PR-AUC con `cross_validate`; estimadores con `tree_method="hist"`, `eval_metric="logloss"`, `random_state=42`.
+3. **Iteración 1 — Baseline:** `XGBClassifier` con hiperparámetros por defecto y solo las 50 columnas SVD del título. F1 = 0.7671 ± 0.0071.
+4. **Iteración 2 — Enriquecida:** mismos hiperparámetros por defecto con las 160 columnas (título + cuerpo + estructurales). F1 = 0.9458 ± 0.0029 (+0.1787 sobre la línea base).
+5. **Iteración 3 — Optimizada:** `RandomizedSearchCV` (30 configuraciones × 5 pliegues = 150 ajustes, `scoring="f1"`, `random_state=42`) sobre las 160 columnas. Mejor F1 de búsqueda = 0.9542.
+
+**Configuración óptima:** `max_depth=5`, `learning_rate=0.2`, `n_estimators=800`, `subsample=0.9`, `colsample_bytree=1.0`, `min_child_weight=7`, `reg_alpha=0.01`, `reg_lambda=2`. `n_estimators=800` coincide con el límite superior del espacio explorado (200–800): es una limitación del diseño, no un óptimo demostrado.
+
+| Iteración | Variables | Exactitud | Precisión | Recall | F1 | ROC-AUC | PR-AUC | Tiempo (s) |
+|-----------|-----------|-----------|-----------|--------|----|---------|--------|------------|
+| 1 — Baseline | 50 SVD título | 0.799 (0.006) | 0.797 (0.008) | 0.739 (0.008) | 0.767 (0.007) | 0.884 (0.004) | 0.873 (0.005) | 6.8 |
+| 2 — Enriquecida | 160 | 0.952 (0.003) | 0.949 (0.004) | 0.943 (0.004) | 0.946 (0.003) | 0.990 (0.001) | 0.989 (0.001) | 13.5 |
+| 3 — Optimizada | 160 | 0.959 (0.002) | 0.956 (0.003) | 0.952 (0.004) | 0.954 (0.003) | 0.993 (0.001) | 0.991 (0.001) | 1,239.7 |
+
+> Los valores son media (DE) entre los 5 pliegues; la clase positiva es Fake. La mejora dominante proviene de las variables (Iter. 1 → 2, +0.1787 en F1), no del ajuste (Iter. 2 → 3, +0.0084 a ~92× el costo computacional).
+
+**Importancias por gain (modelo optimizado):** `title_caps_ratio` domina (12.38 %), seguida de `title_svd_01` (5.60 %), `title_char_len` (4.12 %), `text_svd_09` (3.92 %) y `text_svd_07` (2.68 %). En el top-20: 14 componentes del cuerpo (25.66 %), 5 variables estructurales (20.85 % del top-20; 23.48 % sumando las 10) y 1 SVD del título (5.60 %). El cuerpo, en conjunto, suma el 58.49 % del gain total.
+
+<|message|> Archivo | Contenido | En Git / Regenerable |
+|---------|-----------|----------------------|
+| `models/xgb_iter1_baseline.json` | Modelo Iteración 1 (50 vars, 100 árboles) | Subido al repositorio |
+| `models/xgb_iter2_features.json` | Modelo Iteración 2 (160 vars, 100 árboles) | Subido al repositorio |
+| `models/xgb_iter3_tuned.json` | Modelo Iteración 3 (160 vars, 800 árboles) | Subido al repositorio |
+| `reports/tables/cv_results.csv` | 30 candidatos de la búsqueda aleatoria (21 columnas) | Regenerable localmente |
+| `reports/tables/tabla05_resultados_cv.{csv,md}` | Tabla 5: rendimiento CV de las 3 iteraciones | Regenerable localmente |
+| `reports/tables/tabla06_hiperparametros.{csv,md}` | Tabla 6: espacio de búsqueda y óptimo | Regenerable localmente |
+| `reports/tables/03_modeling_log.json` | Cifras exactas: tiempos, métricas, importancias, balance | Regenerable localmente |
+| `reports/figures/fig07_cv_comparison.png` | Figura 7: comparación CV a 300 dpi | Regenerable localmente |
+| `reports/figures/fig08_feature_importance.png` | Figura 8: top-15 importancias gain a 300 dpi | Regenerable localmente |
+| `reports/sections/03_desarrollo_modelos.md` | Sección 3.3 (2.997 palabras, 3.3.1–3.3.7) | Redacción del Integrante 3 |
+
+> **Nota para el Integrante 4 (`04_eval_shap_errors.py`):** evalúa las 3 iteraciones en `X_test` (12,527 artículos) con Accuracy, Precision, Recall, F1, ROC-AUC y PR-AUC. Usa `shap.TreeExplainer` sobre la Iteración 3 para el Summary Plot global y 2 Waterfall Plots (un acierto y un FP/FN), y analiza 6 noticias mal clasificadas. El índice `id` permite rastrear cada artículo hasta `welfake_clean.parquet`.
+
 
 ## Estructura
 

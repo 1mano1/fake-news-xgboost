@@ -1,0 +1,720 @@
+{
+  "random_state": 42,
+  "split": {
+    "total_rows": 62633,
+    "train_rows": 50106,
+    "test_rows": 12527,
+    "train_classes": {
+      "Real": 27693,
+      "Fake": 22413
+    },
+    "test_classes": {
+      "Real": 6924,
+      "Fake": 5603
+    },
+    "empty_titles_total": 482,
+    "empty_titles_train": 385,
+    "empty_titles_test": 97,
+    "empty_texts_after_cleaning": 53,
+    "texts_lt_20_chars_after_cleaning": 58
+  },
+  "source_cleaning_table03": [
+    {
+      "Regla de limpieza": "Sufijos editoriales en titular (- NYT, - Breitbart, - Reuters)",
+      "Campo": "title",
+      "Artículos afectados": 8560,
+      "% del corpus": 13.67,
+      "Real": 8559,
+      "Fake": 1
+    },
+    {
+      "Regla de limpieza": "Cabecera y firma de agencia Reuters ((Reuters))",
+      "Campo": "text",
+      "Artículos afectados": 21060,
+      "% del corpus": 33.62,
+      "Real": 21045,
+      "Fake": 15
+    },
+    {
+      "Regla de limpieza": "Créditos de imagen y agencias fotográficas (Featured image, Getty, Flickr, Wikimedia)",
+      "Campo": "text",
+      "Artículos afectados": 9289,
+      "% del corpus": 14.83,
+      "Real": 23,
+      "Fake": 9266
+    },
+    {
+      "Regla de limpieza": "Banners y firmas de 21st Century Wire / 21WIRE",
+      "Campo": "text",
+      "Artículos afectados": 759,
+      "% del corpus": 1.21,
+      "Real": 0,
+      "Fake": 759
+    },
+    {
+      "Regla de limpieza": "Enlaces web y multimedia (http/https, www, pic.twitter.com)",
+      "Campo": "text",
+      "Artículos afectados": 5690,
+      "% del corpus": 9.08,
+      "Real": 69,
+      "Fake": 5621
+    },
+    {
+      "Regla de limpieza": "Al menos un marcador eliminado (título o cuerpo)",
+      "Campo": "title / text",
+      "Artículos afectados": 42770,
+      "% del corpus": 68.29,
+      "Real": 29643,
+      "Fake": 13127
+    }
+  ],
+  "tfidf": {
+    "title_vocab_size": 5000,
+    "text_vocab_size": 5000,
+    "title_nnz_train": 365952,
+    "text_nnz_train": 7545100,
+    "top_terms_title_train": {
+      "Real": [
+        [
+          "trump",
+          0.03214
+        ],
+        [
+          "says",
+          0.01977
+        ],
+        [
+          "house",
+          0.012
+        ],
+        [
+          "new",
+          0.01024
+        ],
+        [
+          "clinton",
+          0.0092
+        ],
+        [
+          "russia",
+          0.00872
+        ],
+        [
+          "obama",
+          0.00841
+        ],
+        [
+          "white",
+          0.00779
+        ],
+        [
+          "north",
+          0.00764
+        ],
+        [
+          "china",
+          0.00761
+        ]
+      ],
+      "Fake": [
+        [
+          "trump",
+          0.0387
+        ],
+        [
+          "video",
+          0.03666
+        ],
+        [
+          "hillary",
+          0.02019
+        ],
+        [
+          "obama",
+          0.01413
+        ],
+        [
+          "clinton",
+          0.01388
+        ],
+        [
+          "watch",
+          0.01298
+        ],
+        [
+          "just",
+          0.01246
+        ],
+        [
+          "donald",
+          0.009
+        ],
+        [
+          "donald trump",
+          0.00862
+        ],
+        [
+          "new",
+          0.00804
+        ]
+      ]
+    },
+    "top_terms_text_train": {
+      "Real": [
+        [
+          "said",
+          0.04745
+        ],
+        [
+          "trump",
+          0.03015
+        ],
+        [
+          "president",
+          0.02693
+        ],
+        [
+          "state",
+          0.02111
+        ],
+        [
+          "new",
+          0.0203
+        ],
+        [
+          "government",
+          0.01954
+        ],
+        [
+          "house",
+          0.01911
+        ],
+        [
+          "people",
+          0.01896
+        ],
+        [
+          "states",
+          0.01853
+        ],
+        [
+          "told",
+          0.01832
+        ]
+      ],
+      "Fake": [
+        [
+          "trump",
+          0.03976
+        ],
+        [
+          "just",
+          0.02389
+        ],
+        [
+          "people",
+          0.02383
+        ],
+        [
+          "clinton",
+          0.02362
+        ],
+        [
+          "hillary",
+          0.02247
+        ],
+        [
+          "like",
+          0.02117
+        ],
+        [
+          "donald",
+          0.01934
+        ],
+        [
+          "president",
+          0.01922
+        ],
+        [
+          "said",
+          0.01914
+        ],
+        [
+          "donald trump",
+          0.01849
+        ]
+      ]
+    }
+  },
+  "svd": {
+    "title_n_components": 50,
+    "title_cum_var": {
+      "k5": 2.0422,
+      "k10": 3.4088,
+      "k25": 6.2543,
+      "k50": 9.5986
+    },
+    "text_n_components": 100,
+    "text_cum_var": {
+      "k5": 3.4099,
+      "k10": 5.4707,
+      "k25": 8.9607,
+      "k50": 12.8092,
+      "k100": 17.8942
+    }
+  },
+  "structural_features_table04": [
+    {
+      "Característica": "Longitud del título (caracteres)",
+      "Columna": "title_char_len",
+      "Real M": 64.31,
+      "Real DE": 12.556,
+      "Real Mdn": 64.0,
+      "Real IQR": 14.0,
+      "Fake M": 81.275,
+      "Fake DE": 29.769,
+      "Fake Mdn": 81.0,
+      "Fake IQR": 30.0,
+      "U": 165824828.0,
+      "p": "< .001",
+      "r_rb": 0.466
+    },
+    {
+      "Característica": "Longitud del título (palabras)",
+      "Columna": "title_word_len",
+      "Real M": 10.033,
+      "Real DE": 2.153,
+      "Real Mdn": 10.0,
+      "Real IQR": 2.0,
+      "Fake M": 12.915,
+      "Fake DE": 4.789,
+      "Fake Mdn": 13.0,
+      "Fake IQR": 5.0,
+      "U": 166225739.5,
+      "p": "< .001",
+      "r_rb": 0.464
+    },
+    {
+      "Característica": "Longitud del cuerpo (caracteres)",
+      "Columna": "text_char_len",
+      "Real M": 3489.722,
+      "Real DE": 3360.571,
+      "Real Mdn": 2628.0,
+      "Real IQR": 3276.0,
+      "Fake M": 3041.473,
+      "Fake DE": 3928.395,
+      "Fake Mdn": 2229.0,
+      "Fake IQR": 1902.0,
+      "U": 350548368.0,
+      "p": "< .001",
+      "r_rb": -0.13
+    },
+    {
+      "Característica": "Longitud del cuerpo (palabras)",
+      "Columna": "text_word_len",
+      "Real M": 579.908,
+      "Real DE": 573.005,
+      "Real Mdn": 427.0,
+      "Real IQR": 545.0,
+      "Fake M": 509.143,
+      "Fake DE": 662.363,
+      "Fake Mdn": 377.0,
+      "Fake IQR": 319.0,
+      "U": 345100146.5,
+      "p": "< .001",
+      "r_rb": -0.112
+    },
+    {
+      "Característica": "Proporción de mayúsculas en título",
+      "Columna": "title_caps_ratio",
+      "Real M": 0.103,
+      "Real DE": 0.063,
+      "Real Mdn": 0.085,
+      "Real IQR": 0.102,
+      "Fake M": 0.282,
+      "Fake DE": 0.178,
+      "Fake Mdn": 0.246,
+      "Fake IQR": 0.175,
+      "U": 80721510.0,
+      "p": "< .001",
+      "r_rb": 0.74
+    },
+    {
+      "Característica": "Signos ! en título",
+      "Columna": "title_excl_count",
+      "Real M": 0.002,
+      "Real DE": 0.052,
+      "Real Mdn": 0.0,
+      "Real IQR": 0.0,
+      "Fake M": 0.096,
+      "Fake DE": 0.335,
+      "Fake Mdn": 0.0,
+      "Fake IQR": 0.0,
+      "U": 284286933.5,
+      "p": "< .001",
+      "r_rb": 0.084
+    },
+    {
+      "Característica": "Signos ? en título",
+      "Columna": "title_quest_count",
+      "Real M": 0.025,
+      "Real DE": 0.16,
+      "Real Mdn": 0.0,
+      "Real IQR": 0.0,
+      "Fake M": 0.067,
+      "Fake DE": 0.261,
+      "Fake Mdn": 0.0,
+      "Fake IQR": 0.0,
+      "U": 297893898.0,
+      "p": "< .001",
+      "r_rb": 0.04
+    },
+    {
+      "Característica": "Diversidad léxica (TTR)",
+      "Columna": "lexical_diversity",
+      "Real M": 0.543,
+      "Real DE": 0.114,
+      "Real Mdn": 0.527,
+      "Real IQR": 0.133,
+      "Fake M": 0.563,
+      "Fake DE": 0.136,
+      "Fake Mdn": 0.542,
+      "Fake IQR": 0.121,
+      "U": 281228533.0,
+      "p": "< .001",
+      "r_rb": 0.094
+    },
+    {
+      "Característica": "Sentimiento del título (VADER)",
+      "Columna": "title_sentiment",
+      "Real M": -0.072,
+      "Real DE": 0.368,
+      "Real Mdn": 0.0,
+      "Real IQR": 0.366,
+      "Fake M": -0.137,
+      "Fake DE": 0.437,
+      "Fake Mdn": 0.0,
+      "Fake IQR": 0.511,
+      "U": 340735524.0,
+      "p": "< .001",
+      "r_rb": -0.098
+    },
+    {
+      "Característica": "Sentimiento del cuerpo (VADER, 1k car.)",
+      "Columna": "text_sentiment",
+      "Real M": 0.035,
+      "Real DE": 0.749,
+      "Real Mdn": 0.116,
+      "Real IQR": 1.601,
+      "Fake M": -0.057,
+      "Fake DE": 0.761,
+      "Fake Mdn": -0.126,
+      "Fake IQR": 1.634,
+      "U": 331082107.5,
+      "p": "< .001",
+      "r_rb": -0.067
+    }
+  ],
+  "spearman_corr_train": {
+    "title_char_len": {
+      "title_char_len": 1.0,
+      "title_word_len": 0.8899,
+      "text_char_len": -0.0782,
+      "text_word_len": -0.0689,
+      "title_caps_ratio": 0.389,
+      "title_excl_count": 0.1725,
+      "title_quest_count": 0.0215,
+      "lexical_diversity": 0.029,
+      "title_sentiment": -0.0951,
+      "text_sentiment": -0.0646
+    },
+    "title_word_len": {
+      "title_char_len": 0.8899,
+      "title_word_len": 1.0,
+      "text_char_len": -0.0513,
+      "text_word_len": -0.0363,
+      "title_caps_ratio": 0.4531,
+      "title_excl_count": 0.163,
+      "title_quest_count": 0.0493,
+      "lexical_diversity": -0.0082,
+      "title_sentiment": -0.087,
+      "text_sentiment": -0.0478
+    },
+    "text_char_len": {
+      "title_char_len": -0.0782,
+      "title_word_len": -0.0513,
+      "text_char_len": 1.0,
+      "text_word_len": 0.9975,
+      "title_caps_ratio": 0.0097,
+      "title_excl_count": -0.114,
+      "title_quest_count": 0.066,
+      "lexical_diversity": -0.895,
+      "title_sentiment": -0.0276,
+      "text_sentiment": -0.0099
+    },
+    "text_word_len": {
+      "title_char_len": -0.0689,
+      "title_word_len": -0.0363,
+      "text_char_len": 0.9975,
+      "text_word_len": 1.0,
+      "title_caps_ratio": 0.0312,
+      "title_excl_count": -0.1124,
+      "title_quest_count": 0.0677,
+      "lexical_diversity": -0.9027,
+      "title_sentiment": -0.0293,
+      "text_sentiment": -0.0088
+    },
+    "title_caps_ratio": {
+      "title_char_len": 0.389,
+      "title_word_len": 0.4531,
+      "text_char_len": 0.0097,
+      "text_word_len": 0.0312,
+      "title_caps_ratio": 1.0,
+      "title_excl_count": 0.2329,
+      "title_quest_count": 0.1046,
+      "lexical_diversity": -0.0576,
+      "title_sentiment": -0.0725,
+      "text_sentiment": -0.0115
+    },
+    "title_excl_count": {
+      "title_char_len": 0.1725,
+      "title_word_len": 0.163,
+      "text_char_len": -0.114,
+      "text_word_len": -0.1124,
+      "title_caps_ratio": 0.2329,
+      "title_excl_count": 1.0,
+      "title_quest_count": 0.0266,
+      "lexical_diversity": 0.0974,
+      "title_sentiment": 0.0284,
+      "text_sentiment": 0.0113
+    },
+    "title_quest_count": {
+      "title_char_len": 0.0215,
+      "title_word_len": 0.0493,
+      "text_char_len": 0.066,
+      "text_word_len": 0.0677,
+      "title_caps_ratio": 0.1046,
+      "title_excl_count": 0.0266,
+      "title_quest_count": 1.0,
+      "lexical_diversity": -0.0604,
+      "title_sentiment": 0.0064,
+      "text_sentiment": 0.0142
+    },
+    "lexical_diversity": {
+      "title_char_len": 0.029,
+      "title_word_len": -0.0082,
+      "text_char_len": -0.895,
+      "text_word_len": -0.9027,
+      "title_caps_ratio": -0.0576,
+      "title_excl_count": 0.0974,
+      "title_quest_count": -0.0604,
+      "lexical_diversity": 1.0,
+      "title_sentiment": 0.0284,
+      "text_sentiment": -0.0012
+    },
+    "title_sentiment": {
+      "title_char_len": -0.0951,
+      "title_word_len": -0.087,
+      "text_char_len": -0.0276,
+      "text_word_len": -0.0293,
+      "title_caps_ratio": -0.0725,
+      "title_excl_count": 0.0284,
+      "title_quest_count": 0.0064,
+      "lexical_diversity": 0.0284,
+      "title_sentiment": 1.0,
+      "text_sentiment": 0.3777
+    },
+    "text_sentiment": {
+      "title_char_len": -0.0646,
+      "title_word_len": -0.0478,
+      "text_char_len": -0.0099,
+      "text_word_len": -0.0088,
+      "title_caps_ratio": -0.0115,
+      "title_excl_count": 0.0113,
+      "title_quest_count": 0.0142,
+      "lexical_diversity": -0.0012,
+      "title_sentiment": 0.3777,
+      "text_sentiment": 1.0
+    }
+  },
+  "output_shapes": {
+    "X_train": [
+      50106,
+      160
+    ],
+    "X_test": [
+      12527,
+      160
+    ],
+    "y_train": [
+      50106,
+      1
+    ],
+    "y_test": [
+      12527,
+      1
+    ]
+  },
+  "columns": [
+    "title_svd_00",
+    "title_svd_01",
+    "title_svd_02",
+    "title_svd_03",
+    "title_svd_04",
+    "title_svd_05",
+    "title_svd_06",
+    "title_svd_07",
+    "title_svd_08",
+    "title_svd_09",
+    "title_svd_10",
+    "title_svd_11",
+    "title_svd_12",
+    "title_svd_13",
+    "title_svd_14",
+    "title_svd_15",
+    "title_svd_16",
+    "title_svd_17",
+    "title_svd_18",
+    "title_svd_19",
+    "title_svd_20",
+    "title_svd_21",
+    "title_svd_22",
+    "title_svd_23",
+    "title_svd_24",
+    "title_svd_25",
+    "title_svd_26",
+    "title_svd_27",
+    "title_svd_28",
+    "title_svd_29",
+    "title_svd_30",
+    "title_svd_31",
+    "title_svd_32",
+    "title_svd_33",
+    "title_svd_34",
+    "title_svd_35",
+    "title_svd_36",
+    "title_svd_37",
+    "title_svd_38",
+    "title_svd_39",
+    "title_svd_40",
+    "title_svd_41",
+    "title_svd_42",
+    "title_svd_43",
+    "title_svd_44",
+    "title_svd_45",
+    "title_svd_46",
+    "title_svd_47",
+    "title_svd_48",
+    "title_svd_49",
+    "text_svd_00",
+    "text_svd_01",
+    "text_svd_02",
+    "text_svd_03",
+    "text_svd_04",
+    "text_svd_05",
+    "text_svd_06",
+    "text_svd_07",
+    "text_svd_08",
+    "text_svd_09",
+    "text_svd_10",
+    "text_svd_11",
+    "text_svd_12",
+    "text_svd_13",
+    "text_svd_14",
+    "text_svd_15",
+    "text_svd_16",
+    "text_svd_17",
+    "text_svd_18",
+    "text_svd_19",
+    "text_svd_20",
+    "text_svd_21",
+    "text_svd_22",
+    "text_svd_23",
+    "text_svd_24",
+    "text_svd_25",
+    "text_svd_26",
+    "text_svd_27",
+    "text_svd_28",
+    "text_svd_29",
+    "text_svd_30",
+    "text_svd_31",
+    "text_svd_32",
+    "text_svd_33",
+    "text_svd_34",
+    "text_svd_35",
+    "text_svd_36",
+    "text_svd_37",
+    "text_svd_38",
+    "text_svd_39",
+    "text_svd_40",
+    "text_svd_41",
+    "text_svd_42",
+    "text_svd_43",
+    "text_svd_44",
+    "text_svd_45",
+    "text_svd_46",
+    "text_svd_47",
+    "text_svd_48",
+    "text_svd_49",
+    "text_svd_50",
+    "text_svd_51",
+    "text_svd_52",
+    "text_svd_53",
+    "text_svd_54",
+    "text_svd_55",
+    "text_svd_56",
+    "text_svd_57",
+    "text_svd_58",
+    "text_svd_59",
+    "text_svd_60",
+    "text_svd_61",
+    "text_svd_62",
+    "text_svd_63",
+    "text_svd_64",
+    "text_svd_65",
+    "text_svd_66",
+    "text_svd_67",
+    "text_svd_68",
+    "text_svd_69",
+    "text_svd_70",
+    "text_svd_71",
+    "text_svd_72",
+    "text_svd_73",
+    "text_svd_74",
+    "text_svd_75",
+    "text_svd_76",
+    "text_svd_77",
+    "text_svd_78",
+    "text_svd_79",
+    "text_svd_80",
+    "text_svd_81",
+    "text_svd_82",
+    "text_svd_83",
+    "text_svd_84",
+    "text_svd_85",
+    "text_svd_86",
+    "text_svd_87",
+    "text_svd_88",
+    "text_svd_89",
+    "text_svd_90",
+    "text_svd_91",
+    "text_svd_92",
+    "text_svd_93",
+    "text_svd_94",
+    "text_svd_95",
+    "text_svd_96",
+    "text_svd_97",
+    "text_svd_98",
+    "text_svd_99",
+    "title_char_len",
+    "title_word_len",
+    "text_char_len",
+    "text_word_len",
+    "title_caps_ratio",
+    "title_excl_count",
+    "title_quest_count",
+    "lexical_diversity",
+    "title_sentiment",
+    "text_sentiment"
+  ]
+}
