@@ -1,0 +1,251 @@
+{
+  "shape_original": [
+    72134,
+    4
+  ],
+  "dtypes": {
+    "Unnamed: 0": "int64",
+    "title": "object",
+    "text": "object",
+    "label": "int64"
+  },
+  "nulos": {
+    "Unnamed: 0": 0,
+    "title": 558,
+    "text": 39,
+    "label": 0
+  },
+  "vacios_o_espacios": {
+    "title": 0,
+    "text": 744
+  },
+  "duplicados_title_text": 8456,
+  "duplicados_text": 9377,
+  "clases_original": {
+    "Real": 35028,
+    "Fake": 37106
+  },
+  "textos_con_etiqueta_contradictoria": 1,
+  "marcador_reuters_por_clase": {
+    "Real": 21266,
+    "Fake": 16
+  },
+  "imputados": {
+    "title_vacio": 558,
+    "text_vacio": 783
+  },
+  "shape_final": [
+    62633,
+    5
+  ],
+  "clases_final": {
+    "Real": 34617,
+    "Fake": 28016
+  },
+  "top_terminos_cuerpo": {
+    "Fake": [
+      [
+        "trump",
+        90009
+      ],
+      [
+        "will",
+        41059
+      ],
+      [
+        "people",
+        38362
+      ],
+      [
+        "said",
+        37229
+      ],
+      [
+        "one",
+        35620
+      ],
+      [
+        "clinton",
+        33855
+      ],
+      [
+        "president",
+        29537
+      ],
+      [
+        "hillary",
+        23352
+      ],
+      [
+        "now",
+        21538
+      ],
+      [
+        "new",
+        21102
+      ],
+      [
+        "donald",
+        21048
+      ],
+      [
+        "even",
+        20611
+      ],
+      [
+        "obama",
+        20458
+      ],
+      [
+        "time",
+        20256
+      ],
+      [
+        "state",
+        18642
+      ],
+      [
+        "news",
+        15997
+      ],
+      [
+        "many",
+        15784
+      ],
+      [
+        "election",
+        15579
+      ],
+      [
+        "american",
+        15428
+      ],
+      [
+        "campaign",
+        15206
+      ],
+      [
+        "world",
+        15086
+      ],
+      [
+        "white",
+        15016
+      ],
+      [
+        "government",
+        14710
+      ],
+      [
+        "media",
+        14710
+      ],
+      [
+        "know",
+        14675
+      ]
+    ],
+    "Real": [
+      [
+        "said",
+        183292
+      ],
+      [
+        "trump",
+        106507
+      ],
+      [
+        "will",
+        52771
+      ],
+      [
+        "president",
+        50932
+      ],
+      [
+        "one",
+        42629
+      ],
+      [
+        "new",
+        42320
+      ],
+      [
+        "people",
+        41546
+      ],
+      [
+        "state",
+        38605
+      ],
+      [
+        "states",
+        31402
+      ],
+      [
+        "government",
+        29800
+      ],
+      [
+        "reuters",
+        29017
+      ],
+      [
+        "clinton",
+        28473
+      ],
+      [
+        "house",
+        28360
+      ],
+      [
+        "year",
+        27938
+      ],
+      [
+        "two",
+        27778
+      ],
+      [
+        "united",
+        27497
+      ],
+      [
+        "last",
+        26477
+      ],
+      [
+        "republican",
+        26418
+      ],
+      [
+        "told",
+        23797
+      ],
+      [
+        "campaign",
+        23241
+      ],
+      [
+        "time",
+        23236
+      ],
+      [
+        "first",
+        23178
+      ],
+      [
+        "obama",
+        22797
+      ],
+      [
+        "party",
+        22683
+      ],
+      [
+        "years",
+        21993
+      ]
+    ]
+  }
+}
