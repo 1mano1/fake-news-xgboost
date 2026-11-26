@@ -1,0 +1,105 @@
+{
+  "n_test": 12527,
+  "clases_test": {
+    "Real": 6924,
+    "Fake": 5603
+  },
+  "umbral": 0.5,
+  "metricas_test": [
+    {
+      "Modelo": "Iteración 1 — Baseline",
+      "Exactitud": 0.8076,
+      "Precisión": 0.8058,
+      "Recall": 0.7508,
+      "F1": 0.7773,
+      "ROC-AUC": 0.8925,
+      "PR-AUC": 0.879,
+      "VN": 5910,
+      "FP": 1014,
+      "FN": 1396,
+      "VP": 4207
+    },
+    {
+      "Modelo": "Iteración 2 — Enriquecida",
+      "Exactitud": 0.9544,
+      "Precisión": 0.9499,
+      "Recall": 0.9481,
+      "F1": 0.949,
+      "ROC-AUC": 0.9918,
+      "PR-AUC": 0.9902,
+      "VN": 6644,
+      "FP": 280,
+      "FN": 291,
+      "VP": 5312
+    },
+    {
+      "Modelo": "Iteración 3 — Optimizada",
+      "Exactitud": 0.9622,
+      "Precisión": 0.9577,
+      "Recall": 0.9579,
+      "F1": 0.9578,
+      "ROC-AUC": 0.9941,
+      "PR-AUC": 0.993,
+      "VN": 6687,
+      "FP": 237,
+      "FN": 236,
+      "VP": 5367
+    }
+  ],
+  "errores_iter3": {
+    "total": 473,
+    "FP": 237,
+    "FN": 236,
+    "con_confianza_mayor_0.9": 164,
+    "con_confianza_menor_0.7": 153
+  },
+  "shap": {
+    "base_value_log_odds": -0.2582155764102936,
+    "error_max_aditividad": 4.57763671875e-05,
+    "top20_media_abs": {
+      "title_caps_ratio": 2.92618727684021,
+      "text_svd_01": 1.203082799911499,
+      "title_char_len": 1.0994662046432495,
+      "text_svd_09": 0.7913743853569031,
+      "text_svd_03": 0.7560859322547913,
+      "text_svd_02": 0.7503227591514587,
+      "text_svd_12": 0.7351958751678467,
+      "text_svd_07": 0.6768460869789124,
+      "text_svd_32": 0.6364724040031433,
+      "text_svd_52": 0.6109720468521118,
+      "text_svd_10": 0.4877113103866577,
+      "text_svd_27": 0.4774029552936554,
+      "text_svd_06": 0.4767252802848816,
+      "text_svd_30": 0.4016484022140503,
+      "text_svd_70": 0.39057621359825134,
+      "text_word_len": 0.3812010586261749,
+      "text_svd_41": 0.35076650977134705,
+      "text_svd_87": 0.34601983428001404,
+      "text_svd_25": 0.33891645073890686,
+      "text_svd_00": 0.3245953619480133
+    },
+    "proporcion_por_grupo": {
+      "SVD título (50)": 0.11123977601528168,
+      "SVD cuerpo (100)": 0.7168919444084167,
+      "Estructurales y sentimiento (10)": 0.17186830937862396
+    }
+  },
+  "waterfall_acierto": {
+    "id": 770,
+    "real": "Fake",
+    "p_fake": 1.0,
+    "titulo": "HOW PEOPLE MAGAZINE COVER Proves Hillary Has ALWAYS Been Wildly Unpopular With Women"
+  },
+  "waterfall_error": {
+    "id": 11183,
+    "real": "Real",
+    "p_fake": 0.9999864101409912,
+    "titulo": "DELINGPOLE: Tom Steyer Is In So Deep With The Russians They Should Call Him ’Impaled by Vlad’"
+  },
+  "solapamiento_cuerpo_train_test": {
+    "descripcion": "Artículos de Test cuyo vector SVD del cuerpo (redondeado a 6 decimales) también está en Train",
+    "n": 153,
+    "exactitud_en_ellos": 1.0,
+    "f1_sin_ellos": 0.9573374222061874
+  }
+}

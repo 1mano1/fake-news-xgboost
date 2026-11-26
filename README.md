@@ -22,7 +22,7 @@ El repositorio **no incluye los datos ni el entorno de Python** porque pesan dem
 
 ### Paso 0. Requisitos
 
-- **Python 3.10 o superior.** Compruébalo con `python --version`. Si no lo tienes, descárgalo de https://www.python.org/downloads/ y durante la instalación marca la casilla **“Add Python to PATH”**.
+- **Python 3.10 o superior** (recomendado: **3.12**; el Paso 4 se probó con 3.12.10 y las versiones fijadas en `requirements.txt`). Compruébalo con `python --version`. Si no lo tienes, descárgalo de https://www.python.org/downloads/ y durante la instalación marca la casilla **“Add Python to PATH”**.
 - Una cuenta de **Kaggle** (gratis) para descargar el dataset.
 
 ### Paso 1. Descomprimir y abrir una terminal en la carpeta
@@ -123,7 +123,11 @@ Cada integrante crea su script en `src/` y lee lo que dejó el anterior. Revisa 
 | 1 | `python src/01_eda_cleaning.py` | Integrante 1 | ✅ Listo |
 | 2 | `python src/02_feature_eng.py` | Integrante 2 | ✅ Listo |
 | 3 | `python src/03_modeling_tuning.py` | Integrante 3 | ✅ Listo |
-| 4 | `python src/04_eval_shap_errors.py` | Integrante 4 | Pendiente |
+| 4 | `python src/04_eval_shap_errors.py` | Integrante 4 | ✅ Listo |
+
+El Paso 4 necesita los datos que generan los Pasos 1 y 2. **No hace falta ejecutar el Paso 3:** los modelos ya vienen en `models/` (su búsqueda de hiperparámetros tardó unos 20 minutos).
+
+> El Paso 2 vuelve a escribir los `.joblib` de `models/` y las Figuras 5 y 6, así que Git puede mostrarlos como modificados. En la comprobación del Paso 4 el vocabulario fue idéntico y las diferencias numéricas, mínimas. Para recuperar las versiones del repositorio: `git restore models/*.joblib reports/figures/fig05_svd_explained_variance.png reports/figures/fig06_structural_features.png`
 
 ## Qué hace el Paso 1 (`src/01_eda_cleaning.py`)
 
@@ -188,7 +192,7 @@ Cada integrante crea su script en `src/` y lee lo que dejó el anterior. Revisa 
 
 **Importancias por gain (modelo optimizado):** `title_caps_ratio` domina (12.38 %), seguida de `title_svd_01` (5.60 %), `title_char_len` (4.12 %), `text_svd_09` (3.92 %) y `text_svd_07` (2.68 %). En el top-20: 14 componentes del cuerpo (25.66 %), 5 variables estructurales (20.85 % del top-20; 23.48 % sumando las 10) y 1 SVD del título (5.60 %). El cuerpo, en conjunto, suma el 58.49 % del gain total.
 
-<|message|> Archivo | Contenido | En Git / Regenerable |
+| Archivo | Contenido | En Git / Regenerable |
 |---------|-----------|----------------------|
 | `models/xgb_iter1_baseline.json` | Modelo Iteración 1 (50 vars, 100 árboles) | Subido al repositorio |
 | `models/xgb_iter2_features.json` | Modelo Iteración 2 (160 vars, 100 árboles) | Subido al repositorio |
@@ -202,6 +206,38 @@ Cada integrante crea su script en `src/` y lee lo que dejó el anterior. Revisa 
 | `reports/sections/03_desarrollo_modelos.md` | Sección 3.3 (2.997 palabras, 3.3.1–3.3.7) | Redacción del Integrante 3 |
 
 > **Nota para el Integrante 4 (`04_eval_shap_errors.py`):** evalúa las 3 iteraciones en `X_test` (12,527 artículos) con Accuracy, Precision, Recall, F1, ROC-AUC y PR-AUC. Usa `shap.TreeExplainer` sobre la Iteración 3 para el Summary Plot global y 2 Waterfall Plots (un acierto y un FP/FN), y analiza 6 noticias mal clasificadas. El índice `id` permite rastrear cada artículo hasta `welfake_clean.parquet`.
+
+
+## Qué hace el Paso 4 (`src/04_eval_shap_errors.py`)
+
+1. **Evaluación en Test:** carga los 3 modelos guardados, **sin reentrenarlos**, y los evalúa en los 12,527 artículos de `X_test` con umbral fijo de 0.5.
+2. **SHAP:** usa `shap.TreeExplainer` sobre la Iteración 3 (valores en *log-odds*; positivo empuja hacia Fake) y comprueba que las contribuciones reconstruyan la salida del modelo. Exporta los términos de los componentes SVD más influyentes.
+3. **Explicaciones locales:** 2 *waterfall plots*, el verdadero positivo con mayor probabilidad y el error más extremo.
+4. **Errores:** selecciona automáticamente los 3 falsos positivos y los 3 falsos negativos en que el modelo más se equivoca.
+
+| Iteración | Exactitud | Precisión | Recall | F1 | ROC-AUC | PR-AUC |
+|-----------|-----------|-----------|--------|----|---------|--------|
+| 1 — Baseline | 0.8076 | 0.8058 | 0.7508 | 0.7773 | 0.8925 | 0.8790 |
+| 2 — Enriquecida | 0.9544 | 0.9499 | 0.9481 | 0.9490 | 0.9918 | 0.9902 |
+| 3 — Optimizada | 0.9622 | 0.9577 | 0.9579 | 0.9578 | 0.9941 | 0.9930 |
+
+La Iteración 3 comete **473 errores** (237 falsos positivos y 236 falsos negativos). La variable más influyente según SHAP es `title_caps_ratio`; por bloques, el SVD del cuerpo suma el 71.7 % de la importancia, las 10 estructurales el 17.2 % y el SVD del título el 11.1 %.
+
+**Limitaciones:** “reuters” sigue en el vocabulario del cuerpo (aparece en `text_svd_87`); además, 153 artículos de Test tienen el mismo vector SVD del cuerpo que alguno de Train (en 33 es todo ceros; excluirlos cambia el F1 de 0.9578 a 0.9573). Las métricas describen el desempeño dentro de WELFake, no en fuentes nuevas.
+
+| Archivo | Contenido |
+|---------|-----------|
+| `reports/tables/tabla07_metricas_test.{csv,md}` | Tabla 7: métricas y matrices de confusión en Test |
+| `reports/tables/tabla08_errores.{csv,md}` | Tabla 8: las 6 noticias mal clasificadas (versión técnica) |
+| `reports/tables/04_errores_texto.md` | Título y primeros 2,500 caracteres de esas 6 noticias |
+| `reports/tables/04_terminos_svd.csv` | Términos de los componentes SVD influyentes |
+| `reports/tables/04_eval_log.json` | Cifras exactas de métricas, errores, SHAP y solapamiento |
+| `reports/figures/fig09_test_comparison.png` | Figura 9: curvas ROC y PR, y matriz de confusión |
+| `reports/figures/fig10_shap_summary.png` | Figura 10: resumen SHAP global |
+| `reports/figures/fig11_shap_waterfall_acierto.png` | Figura 11: explicación de un acierto |
+| `reports/figures/fig12_shap_waterfall_error.png` | Figura 12: explicación de un error |
+| `reports/sections/04_desarrollo_evaluacion.md` | Sección 3.4 (redacción) |
+| `reports/Proyecto_FakeNews_XGBoost_completo.docx` | **Documento más actualizado:** índice, introducción, desarrollo (secciones 1 a 4), conclusiones y referencias |
 
 
 ## Estructura
